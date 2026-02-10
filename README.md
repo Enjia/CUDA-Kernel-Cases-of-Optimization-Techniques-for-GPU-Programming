@@ -59,118 +59,145 @@ Benchmark all cases with warmup + averaged timing (generates `results.txt`):
 
 ## Benchmark Results (A10, CUDA 12.6)
 
-The following results are **averages over 10 runs** with **3 warmup runs** per case. See `results.txt` for the raw output used below.
+The following results are **averages over 10 runs** with **3 warmup runs** per case. Speedup is computed as **baseline / optimized** using the first two timing labels for each case. See `results.txt` for the raw output used below.
 
 ```
 # Benchmark results (average over 10 runs, 3 warmup runs)
 === 01_use_specialized_memory
 max diff: 0.0
-global kernel: 0.040 ms, constant kernel: 0.030 ms
+global kernel: 0.042 ms, constant kernel: 0.030 ms
+speedup (global kernel / constant kernel): 1.40x
 
 === 02_use_warp_primitives
 max diff: 0.0
-shared reduce: 0.128 ms, warp reduce: 0.015 ms
+shared reduce: 0.125 ms, warp reduce: 0.015 ms
+speedup (shared reduce / warp reduce): 8.37x
 
 === 03_register_blocking
 max diff: 0.0
-1 output/thread: 0.120 ms, 2 outputs/thread: 0.029 ms
+1 output/thread: 0.131 ms, 2 outputs/thread: 0.030 ms
+speedup (1 output/thread / 2 outputs/thread): 4.42x
 
 === 04_reduce_register_usage
 max diff: 0.0
-heavy temps: 0.133 ms, light temps: 0.036 ms
+heavy temps: 0.126 ms, light temps: 0.036 ms
+speedup (heavy temps / light temps): 3.52x
 
 === 05_recompute_instead_of_memory
 max diff: 0.0
-index array: 0.148 ms, recompute: 0.030 ms
+index array: 0.152 ms, recompute: 0.033 ms
+speedup (index array / recompute): 4.58x
 
 === 06_coalesced_memory_access
 max diff: 0.0
-AoS: 0.211 ms, SoA: 0.090 ms
+AoS: 0.210 ms, SoA: 0.090 ms
+speedup (AoS / SoA): 2.34x
 
 === 07_spatial_tiling
 max diff: 0.0
-naive: 0.154 ms, tile: 0.029 ms
+naive: 0.152 ms, tile: 0.030 ms
+speedup (naive / tile): 5.13x
 
 === 08_kernel_fusion
 max diff: 1.19209e-07
-2 kernels: 0.145 ms, fused: 0.027 ms
+2 kernels: 0.148 ms, fused: 0.026 ms
+speedup (2 kernels / fused): 5.75x
 
 === 09_prefetching
 max diff: 0.0
 direct: 0.122 ms, shared prefetch: 0.027 ms
+speedup (direct / shared prefetch): 4.49x
 
 === 10_data_compression
 max diff: 1.19209e-07
-float: 0.126 ms, packed8: 0.024 ms
+float: 0.118 ms, packed8: 0.023 ms
+speedup (float / packed8): 5.18x
 
 === 11_precomputation
 max diff: 0.000972781
-sinf: 0.026 ms, LUT: 0.036 ms
+sinf: 0.026 ms, LUT: 0.034 ms
+speedup (sinf / LUT): 0.75x
 
 === 12_loop_unrolling
 max diff: 0.0
-no unroll: 0.152 ms, unroll: 0.023 ms
+no unroll: 0.152 ms, unroll: 0.022 ms
+speedup (no unroll / unroll): 6.79x
 
 === 13_reduce_branch_divergence
 max diff: 0.0
-branch: 0.120 ms, mask: 0.028 ms
+branch: 0.125 ms, mask: 0.030 ms
+speedup (branch / mask): 4.20x
 
 === 14_sparse_matrix_format
 max diff: 1.19209e-07
-COO: 0.150 ms, CSR: 0.021 ms
+COO: 0.143 ms, CSR: 0.021 ms
+speedup (COO / CSR): 6.85x
 
 === 15_kernel_splitting
 max diff: 0.0
-single kernel: 0.152 ms, split: 0.054 ms
+single kernel: 0.159 ms, split: 0.055 ms
+speedup (single kernel / split): 2.89x
 
 === 16_reduce_redundant_work
 max diff: 0.0
-redundant: 0.231 ms, shared: 0.034 ms
+redundant: 0.225 ms, shared: 0.034 ms
+speedup (redundant / shared): 6.70x
 
 === 17_vectorization
 max diff: 0.0
-scalar: 0.151 ms, float4: 0.036 ms
+scalar: 0.151 ms, float4: 0.037 ms
+speedup (scalar / float4): 4.12x
 
 === 18_fast_math
 max diff: 2.38419e-07
-expf: 0.116 ms, __expf: 0.027 ms
+expf: 0.118 ms, __expf: 0.026 ms
+speedup (expf / __expf): 4.43x
 
 === 19_warp_centric_programming
 max diff: 0.0
-per-thread: 0.119 ms, warp-centric: 0.029 ms
+per-thread: 0.121 ms, warp-centric: 0.029 ms
+speedup (per-thread / warp-centric): 4.22x
 
 === 20_variable_work_per_thread
 max diff: 0.0
-fixed: 0.393 ms, grid-stride: 0.299 ms
+fixed: 0.393 ms, grid-stride: 0.298 ms
+speedup (fixed / grid-stride): 1.32x
 
 === 21_tune_block_size
 max diff: 0.0
 block128: 0.036 ms, occupancy block 768: 0.028 ms
+speedup (block128 / occupancy block 768): 1.26x
 
 === 22_auto_tuning
-best block: 256, time: 0.026 ms
+best block: 256, time: 0.027 ms
 
 === 23_load_balancing
 max diff: 0.0
-static: 0.258 ms, dynamic: 0.071 ms
+static: 0.258 ms, dynamic: 0.073 ms
+speedup (static / dynamic): 3.51x
 
 === 24_reduce_synchronization
 max diff: 0.0
-shared sync: 0.118 ms, warp shuffle: 0.016 ms
+shared sync: 0.126 ms, warp shuffle: 0.016 ms
+speedup (shared sync / warp shuffle): 8.01x
 
 === 25_reduce_atomic_ops
 max diff: 0.0
-global atomics: 0.149 ms, block local: 0.063 ms
+global atomics: 0.156 ms, block local: 0.064 ms
+speedup (global atomics / block local): 2.44x
 
 === 26_inter_block_synchronization
 max diff: 0.0
-multi-kernel: 0.151 ms, time: 0.050 ms
+multi-kernel: 0.156 ms, time: 0.046 ms
+speedup (multi-kernel / time): 3.40x
 
 === 27_host_device_comm_optimization
 max diff: 0.0
-sync copy: 2.727 ms, async pinned: 0.367 ms
+sync copy: 2.774 ms, async pinned: 0.366 ms
+speedup (sync copy / async pinned): 7.57x
 
 === 28_cpu_gpu_cooperation
 max diff: 1.19209e-07
-GPU only: 0.102 ms, CPU+GPU: 2.047 ms
+GPU only: 0.111 ms, CPU+GPU: 2.067 ms
+speedup (GPU only / CPU+GPU): 0.05x
 ```

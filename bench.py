@@ -117,6 +117,9 @@ def main():
             if r["labels"]:
                 parts = [f"{lbl}: {val:.3f} ms" for lbl, val in zip(r["labels"], r["means"])]
                 lines.append(", ".join(parts))
+        if len(r["labels"]) >= 2 and len(r["means"]) >= 2 and r["means"][1] > 0:
+            speedup = r["means"][0] / r["means"][1]
+            lines.append(f"speedup ({r['labels'][0]} / {r['labels'][1]}): {speedup:.2f}x")
         lines.append("")
 
     out_path = root / args.out
